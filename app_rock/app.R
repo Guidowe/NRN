@@ -1,13 +1,12 @@
 
 library(tm)
 library(wordcloud2)
-# library(wordcloud)
 library(memoise)
 library(tidyverse)
 library(magrittr)
 library(shiny)
 
-Letras <- readRDS("app_Rock/Letras_Rock_Limpio.RDS")
+Letras <- readRDS("Letras_Rock_Limpio.RDS")
 Colores <- c("#0042A6", "#354E98", "#4C5A8E", "#5E6586", "#6E717C", "#7E6D70", "#875A63", "#8D4656", "#90304A",
              "#910D3E", "#664F2B", "#715D42", "#7E6D59", "#8C8073", "#9E9892", "#909C99", "#6D8782", "#4E786F",
              "#2F6A60", "#005E52")
@@ -59,7 +58,7 @@ ui <- fluidPage(
     sidebarPanel(
       selectInput("aut", "Elegir artista",
                   choices = autores, 
-                  selected=autores[5]),
+                  selected=autores[2]),
       actionButton("update", "Actualizar"),
       hr(),
       sliderInput("freq",
@@ -135,7 +134,7 @@ server <- function(input, output, session) {
         
   })
   output$Cantidad_canciones <- renderText({
-     paste0("Catidad de Canciones del Artista: ",Cant_Canciones())}
+     paste0("Cantidad de Canciones del Artista: ",Cant_Canciones())}
   )    
 
 }
