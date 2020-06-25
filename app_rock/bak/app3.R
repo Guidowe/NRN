@@ -1,4 +1,3 @@
-
 library(tm)
 library(wordcloud2)
 library(memoise)
@@ -15,21 +14,24 @@ autores <-c(sort(unique(Letras$autor)))
 Letras <- Letras %>% 
   group_by(autor) %>% 
   mutate(Canciones_incluidas = n())
-texto_eleg <- "alguien"
+texto_eleg <- "fuego"
 # cachea resultados y no recalcula todo
 get_df <- memoise(function(texto_eleg){
   
-Letras %>% 
+A<- Letras %>% 
     unnest_tokens(word, texto) %>% 
     inner_join(data_frame(word = texto_eleg)) %>% 
     group_by(autor) %>% 
-    summarise(Canciones_incluidas = unique(Canciones_incluidas),
-              Frecuencia_palabra = n(),
-              Cantidad_Canciones_aparicion = length(unique(titulo)),
-              ratio_aparicion = Cantidad_Canciones_aparicion/Canciones_incluidas,
+    summarise("Canciones en base de datos" = unique(Canciones_incluidas),
+              "Frecuencia de palabra elegida" = n(),
+              "Aparece en x canciones" = length(unique(titulo)),
+              "ratio aparición" = round(`Frecuencia de palabra elegida`/`Canciones en base de datos`,digits = 2),
+              "Canc. aparición/Canc.Totales" = round(`Aparece en x canciones`/`Canciones en base de datos`,digits = 2),
               Canciones = paste0(unique(titulo),collapse = " - ")) %>% 
-    arrange(desc(ratio_aparicion,Cantidad_apariciones)) %>% 
-    select(autor,ratio_aparicion,everything(),-Canciones)
+    arrange(desc(`ratio aparición`,`Frecuencia de palabra elegida`)) %>% 
+    select(autor,`Frecuencia de palabra elegida`,
+           `Canciones en base de datos`,`ratio aparición`,`Aparece en x canciones`,
+           everything(),-Canciones) 
   }
 )
 
@@ -103,7 +105,10 @@ ui <- fluidPage(
     )
   ),
   tabPanel("Ingresar palabra", 
-           textInput("Texto_ing", "Ingresar palabra en minúsculas",value = "droga", width = NULL, placeholder = NULL),
+           textInput("Texto_ing",
+                     "Ingresar palabra en minúsculas",
+                     value = "fuego", 
+                     width = NULL, placeholder = NULL),
            actionButton("update2", "Actualizar"),
            hr(),
            dataTableOutput("quien_usa"))
@@ -177,7 +182,7 @@ server <- function(input, output, session) {
                widgetsize = NULL, figPath = NULL, hoverFunction = NULL)    
         
   })
-  output$quien_usa <- renderDataTable({
+    output$quien_usa <- renderDataTable({
      Palabra_artista()
     
   })    

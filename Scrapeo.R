@@ -5,12 +5,14 @@ library(glue)
 #### funciones #####
 
 get_text <- function(link){
-  tryCatch(html_text(read_html(link)),error = function(err) {glue::glue("error_in_link: {link}")})
+  tryCatch(html_text(read_html(link)),
+           error = function(err) {glue::glue("error_in_link: {link}")})
 }
 
 get_letra <- function(link){
   tryCatch(html_text(read_html(link) %>% 
-                       rvest::html_nodes("div.letra.text-left")),error = function(err) {glue::glue("error_in_link: {link}")})
+                    rvest::html_nodes("div.letra.text-left")),
+           error = function(err) {glue::glue("error_in_link: {link}")})
 }
 
 limpiar_textos <- function(x){
