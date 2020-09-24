@@ -1,8 +1,8 @@
 # Nubes_rock_nacional
-Escrapeo y aplicación shinny con nubes de palabras de letras del rock nacional
+Aplicación shinny con nubes de palabras de letras del rock nacional, según artistas.
 
-Escrapeo de https://rock.com.ar              
 Aplicación: https://guidowe45.shinyapps.io/Nube_Rock_Nacional/
+Escrapeo: https://rock.com.ar              
 
 
 
